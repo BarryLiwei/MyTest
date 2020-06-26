@@ -7,6 +7,9 @@
                 <search-col  :info="search.list[search.dcc]" :leftCol="8" filterable v-if="['dcc_supervisor','dcc_group_leader','dcc_inviter'].indexOf(roleKey)>-1"></search-col>
                 <search-col  :info="search.list[search.grade]" :leftCol="8"></search-col>
                 <search-col  :info="search.list[search.customer]" :leftCol="8" @fristChange="changeFrom" size="small"></search-col>
+                
+                <search-col  :info="search.list[search.keyword]" :leftCol="8" placeholder="搜索" size="small"></search-col>
+
                 <search-col  :info="search.list[search.brand]" :leftCol="8" @change="changeBrand"></search-col>
                 <search-col  :info="search.list[search.series]" :leftCol="8" @change="changeSeries"></search-col>
                 <search-col  :info="search.list[search.model]" :leftCol="8"></search-col>
@@ -256,7 +259,12 @@ export default {
                         type: 'datePicker', 
                         label: '线索获取时间', 
                         currentVal: '', 
-                    },
+                    },{
+                        prop: 'keyword',
+                        type: 'input', 
+                        label: '关键字搜索', 
+                        currentVal: '', 
+                    }
                 ],
                 dccGroup: 0, // 处理坐席组
                 dcc: 1, // 处理DCC邀约员
@@ -269,6 +277,7 @@ export default {
                 type: 8, // 线索类型
                 state: 9, // 线索状态
                 time: 10, // 获取线索时间
+                keyword: 11, // 关键字搜索
             }
 
             // 从详情页面跳转回来取缓存数据
@@ -402,7 +411,7 @@ export default {
         },
         getParams(){
             const { currentPage, pageSize } = this.dataTable.page;
-            const { grade, customer, brand,series,model, area, state,type, time,dcc,dccGroup, list } = this.search;
+            const { grade, customer, brand,series,model, area, state,type, time,dcc,dccGroup, list,keyword } = this.search;
             let params = {
                 dccGroupId: list[dccGroup].currentVal,       // 处理坐席组
                 dccId: list[dcc].currentVal,             // 处理DCC
@@ -419,6 +428,7 @@ export default {
                 createdAtEndTime: list[time].currentVal && list[time].currentVal[1]+ " 23:59:59",  // 线索获取结束时间
                 pageSize: pageSize,     // 每页数量
                 page: currentPage,          // 当前页
+                keyword: list[keyword].currentVal,       // 搜索
             }
             return params;
         },
