@@ -307,6 +307,7 @@ export default {
                 max_id: this.maxId
             }
             let _this = this;
+            return
             this.$fetch.work.noReadMsg(params).then((res) => {
                 this.$handleResponse(res, data => {
                     this.redPoint = false;

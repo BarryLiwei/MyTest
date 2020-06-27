@@ -9,6 +9,9 @@
                 <search-col  :info="search.list[search.status]"></search-col>
                 <search-col  :info="search.list[search.role]"></search-col>
                 <search-col  :info="search.list[search.org]"></search-col>
+
+                <search-col  :info="search.list[search.people]" placeholder="请选择"></search-col>
+
             </div>
         </search-bar>
 
@@ -145,12 +148,18 @@ export default {
                         isAllTitle:'全部',
                         optionLabel:'name', 
                         optionValue:"id", 
+                    },{
+                        prop: 'people',
+                        type: 'input', 
+                        label: '新增人员', 
+                        currentVal: '', 
                     }
                 ],
                 keyword: 0, // 姓名/账号
                 status: 1,  // 账号状态
                 role: 2,    // 角色权限
                 org: 3,     // 管理范围
+                people: 4,  // 新增人员
             }
         },
         initTable(){
@@ -260,7 +269,7 @@ export default {
         },
         getParams(){
             const { currentPage, pageSize } = this.dataTable.page;
-            const { keyword, status, role, org , list } = this.search;
+            const { keyword, status, role, org , list, people } = this.search;
             let params = {
                 keyword: list[keyword].currentVal,    
                 status: list[status].currentVal,     
@@ -269,6 +278,7 @@ export default {
                 expand: 'roles,orgs',
                 pageSize: pageSize,     // 每页数量
                 page: currentPage,          // 当前页
+                people: list[people].currentVal,  // 新增人员
             }
             return params;
         },
