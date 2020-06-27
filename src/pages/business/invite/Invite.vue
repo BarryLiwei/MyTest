@@ -7,6 +7,9 @@
                 <search-col :info="search.list[search.dcc]" filterable v-if="['dcc_supervisor','dcc_group_leader','dcc_inviter'].indexOf(roleKey)>-1"></search-col>
                 <search-col :info="search.list[search.brand]" @change="changeBrand"></search-col>
                 <search-col :info="search.list[search.series]" @change="changeSeries"></search-col>
+
+                <search-col :info="search.list[search.keyword]" placeholder="请选择" @change="changeSeries"></search-col>
+
                 <search-col :info="search.list[search.model]"></search-col>
                 <search-col :info="search.list[search.arrival]"></search-col>
                 <search-col :info="search.list[search.area]" filterable></search-col>
@@ -223,6 +226,11 @@ export default {
                         type: 'datePicker', 
                         label: '实际到店时间', 
                         currentVal: visitedDate, 
+                    },{
+                        prop: 'keyword',
+                        type: 'input', 
+                        label: '关键字', 
+                        currentVal: '', 
                     }
                 ],
                 dccGroup: 0, // DCC坐席组
@@ -237,6 +245,7 @@ export default {
                 areaStatus: 9,   // 档案状态
                 appoint: 10,  // 登记到店时间
                 visited: 11,   // 实际到店时间
+                keyword: 12,   // 关键字搜索
             }
         },
         initTable(){
@@ -352,7 +361,7 @@ export default {
         },
         getParams(){
             const { currentPage, pageSize } = this.dataTable.page;
-            const { brand,series,model,arrival,area,advisor,sendTime, areaStatus,appoint,visited,dccGroup, dcc, list } = this.search;
+            const { brand,series,model,arrival,area,advisor,sendTime, areaStatus,appoint,visited,dccGroup, dcc, list, keyword } = this.search;
             let params = {
                 dccGroupId: list[dccGroup].currentVal,   // 坐席组
                 dccId: list[dcc].currentVal,             // 邀约员
@@ -371,6 +380,7 @@ export default {
                 visitDateEndTime: list[visited].currentVal && list[visited].currentVal[0] + ' 23:59:59', 
                 pageSize: pageSize,     // 每页数量
                 page: currentPage,          // 当前页
+                keyword: list[keyword].currentVal,   // 关键字搜索
             }
             return params;
         },
