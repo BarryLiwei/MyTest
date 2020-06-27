@@ -7,6 +7,9 @@
                 <search-col :info="search.list[search.dcc]" filterable v-if="['dcc_supervisor','dcc_group_leader','dcc_inviter'].indexOf(roleKey)>-1"></search-col>
                 <search-col :info="search.list[search.level]"></search-col>
                 <search-col :info="search.list[search.customer]"  @fristChange="changeFrom" size="small"></search-col>
+                
+                <search-col :info="search.list[search.keyword]" placeholder="请选择"  @change="changeBrand"></search-col>
+
                 <search-col :info="search.list[search.brand]"  @change="changeBrand"></search-col>
                 <search-col :info="search.list[search.series]" @change="changeSeries"></search-col>
                 <search-col :info="search.list[search.model]"></search-col>
@@ -225,7 +228,12 @@ export default {
                         selectOptions:[], 
                         optionLabel:'title', 
                         optionValue:"id",
-                    },
+                    },{
+                        prop: 'keyword',
+                        type: 'input', 
+                        label: '关键字', 
+                        currentVal: '', 
+                    }
                 ],
                 dccGroup: 0, // 跟进坐席组
                 dcc: 1,      // 跟进DCC
@@ -239,6 +247,7 @@ export default {
                 loan:9,      // 是否贷款
                 order:10,     // 下订时间
                 level: 11,    // 意向等级
+                keyword: 12,   //关键字搜索
             }
         },
         initTable(){
@@ -411,7 +420,7 @@ export default {
         },
         getParams(){
             const { currentPage, pageSize } = this.dataTable.page;
-            const { dccGroup,dcc,level, customer,brand,series,model,area,advisor,insurance,loan,order, list } = this.search;
+            const { dccGroup,dcc,level, customer,brand,series,model,area,advisor,insurance,loan,order, list, keyword } = this.search;
             let params = {
                 dccGroupId: list[dccGroup].currentVal,
                 dccId:list[dcc].currentVal,
@@ -429,6 +438,7 @@ export default {
                 orderEndTime: list[order].currentVal && list[order].currentVal[1]+ ' 23:59:59',    //  下订时间
                 pageSize: pageSize,     // 每页数量
                 page: currentPage,          // 当前页
+                keyword: list[keyword].currentVal,  // 关键字搜索
             }
             return params;
         },
