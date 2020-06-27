@@ -7,6 +7,9 @@
                 <search-col  :info="search.list[search.dcc]" filterable :leftCol="8" v-if="['dcc_supervisor','dcc_group_leader','dcc_inviter'].indexOf(roleKey)>-1"></search-col>
                 <search-col :info="search.list[search.customer]" :leftCol="8" @fristChange="changeFrom" size="small"></search-col>
                 <search-col :info="search.list[search.brand]" :leftCol="8" @change="changeBrand"></search-col>
+
+                <search-col :info="search.list[search.keyword]" :leftCol="8" placeholder="请选择" @change="changeBrand"></search-col>
+
                 <search-col :info="search.list[search.series]" :leftCol="8" @change="changeSeries"></search-col>
                 <search-col :info="search.list[search.model]" :leftCol="8"></search-col>
                 <search-col :info="search.list[search.level]" :leftCol="8"></search-col>
@@ -244,6 +247,11 @@ export default {
                         selectOptions:[{'name': '是', 'id': 'yes'},{'name': '否', 'id': 'no'}], 
                         optionLabel:'name', 
                         optionValue:"id", 
+                    },{
+                        prop: 'keyword',
+                        type: 'input', 
+                        label: '关键字', 
+                        currentVal: '',   // 0：跟进中
                     }
                 ],
                 dccGroup: 0, // 所属DCC坐席组
@@ -259,6 +267,7 @@ export default {
                 next: 10,     // 下次跟进时间
                 status: 11,   // 跟进状态
                 overTime: 12,  // 逾期跟进
+                keyword: 13,   // 关键字搜索
             }
           
             let that = this;
@@ -444,7 +453,7 @@ export default {
         },
         getParams(){
             const { currentPage, pageSize } = this.dataTable.page;
-            const { customer,brand,series,model,level,area,archive,last,next,status,dccGroup,dcc,overTime,list } = this.search;
+            const { customer,brand,series,model,level,area,archive,last,next,status,dccGroup,dcc,overTime,list,keyword } = this.search;
             let params = {
                 dccGroupId: list[dccGroup].currentVal,   // 跟进坐席组
                 dccId: list[dcc].currentVal,             // 跟进DCC
@@ -465,6 +474,7 @@ export default {
                 overtime: list[overTime].currentVal,     // 逾期跟进
                 pageSize: pageSize,     // 每页数量
                 page: currentPage,          // 当前页
+                keyword: list[keyword].currentVal,   // 添加关键字搜索
             }
             return params;
         },
