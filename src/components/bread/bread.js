@@ -8,4 +8,5 @@ export default {
     '/setting/role-power/edit':[{ name: "角色权限设置", path: "/setting/role-power" },{ name: "编辑角色", path: "" }],
     '/business/clue/detail': [{ name: "线索详情", path: "" }],
     '/business/potential/detail':[{ name: "潜客详情", path: "" }]
+
 }
